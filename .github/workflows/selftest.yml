@@ -1,0 +1,55 @@
+name: selftest
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  passthrough:
+    name: clean fixture passes
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: vendored tree is intact
+        run: node scripts/verify-vendored.cjs
+      - name: run action on a corpus whose claims agree
+        uses: ./
+        with:
+          workdir: examples/fixture
+          format: json
+          out: report.json
+      - name: the report exists and says verified
+        run: |
+          node -e "
+            const r = require('./examples/fixture/report.json');
+            if (r.counts.verified !== 2) { console.error('expected 2 verified, got', r.counts.verified); process.exit(1); }
+            if (r.gate.failed) { console.error('gate failed unexpectedly'); process.exit(1); }
+            console.log('verified', r.counts.verified, 'drift', r.counts.drift, 'unbound', r.counts.unbound);
+          "
+
+  negative:
+    name: drifting fixture fails
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - id: run
+        continue-on-error: true
+        uses: ./
+        with:
+          workdir: examples/fixture-drifting
+          format: json
+          out: report.json
+      - name: the action must have failed, and said why
+        run: |
+          node -e "
+            const r = require('./examples/fixture-drifting/report.json');
+            console.log('drift', r.counts.drift, 'gate', JSON.stringify(r.gate));
+            if (!r.gate.failed) { console.error('the gate did not fail on a real mismatch'); process.exit(1); }
+            if (r.counts.drift !== 1) { console.error('expected exactly 1 drift'); process.exit(1); }
+          "
+      - name: exit code must be non-zero
+        run: |
+          if [ "${{ steps.run.outputs.exit-code }}" = "0" ]; then
+            echo "action reported exit-code 0 on a drifting corpus"; exit 1
+          fi

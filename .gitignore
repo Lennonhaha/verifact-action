@@ -1,0 +1,6 @@
+# verifact cache
+.verifact/
+
+# reports
+report.json
+*.report.json

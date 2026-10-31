@@ -1,0 +1,103 @@
+name: 'verifact claim binding'
+description: 'Fail the build when a number in your Markdown does not bind to an artefact that exists'
+author: 'Liu Tianhe'
+
+branding:
+  icon: 'check-circle'
+  color: 'purple'
+
+inputs:
+  config:
+    description: 'Path to the verifact config, relative to workdir.'
+    required: false
+    default: 'verifact.json'
+  workdir:
+    description: 'Directory to scan. The config path is resolved inside it.'
+    required: false
+    default: '.'
+  fail-on:
+    description: 'Gate policy: none | drift | review | lint-high. "drift" fails only when a bound value disagrees with its artefact.'
+    required: false
+    default: 'drift'
+  format:
+    description: 'stdout format: text | json | md.'
+    required: false
+    default: 'text'
+  out:
+    description: 'Write the report to this file (relative to workdir). Empty means stdout only.'
+    required: false
+    default: ''
+  extra-args:
+    description: 'Additional flags, passed through verbatim, e.g. "--no-cache --deep".'
+    required: false
+    default: ''
+  node-version:
+    description: 'Node.js version used to run the checker.'
+    required: false
+    default: '20'
+
+outputs:
+  exit-code:
+    description: 'Exit code of the checker: 0 pass, 1 gate failed or scan error, 2 usage/config error.'
+    value: ${{ steps.verify.outputs.code }}
+  report-path:
+    description: 'Absolute path of the written report. Empty when the out input is empty.'
+    value: ${{ steps.verify.outputs.report }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node-version }}
+
+    - name: Run verifact
+      id: verify
+      shell: bash
+      working-directory: ${{ inputs.workdir }}
+      env:
+        IN_CONFIG: ${{ inputs.config }}
+        IN_FAIL_ON: ${{ inputs.fail-on }}
+        IN_FORMAT: ${{ inputs.format }}
+        IN_OUT: ${{ inputs.out }}
+        IN_EXTRA: ${{ inputs.extra-args }}
+        ACTION_PATH: ${{ github.action_path }}
+      run: |
+        set -uo pipefail
+        args=(verify --config "$IN_CONFIG" --fail-on "$IN_FAIL_ON" --format "$IN_FORMAT")
+        if [ -n "$IN_OUT" ]; then
+          args+=(--out "$IN_OUT")
+        fi
+        if [ -n "$IN_EXTRA" ]; then
+          read -r -a extra <<< "$IN_EXTRA"
+          args+=("${extra[@]}")
+        fi
+        node "$ACTION_PATH/verifact/bin/verifact.js" "${args[@]}"
+        code=$?
+        {
+          echo "code=$code"
+          if [ -n "$IN_OUT" ]; then
+            echo "report=$PWD/$IN_OUT"
+          else
+            echo "report="
+          fi
+        } >> "$GITHUB_OUTPUT"
+        exit "$code"
+
+    - name: Summarise
+      if: always()
+      shell: bash
+      env:
+        IN_CODE: ${{ steps.verify.outputs.code }}
+        IN_REPORT: ${{ steps.verify.outputs.report }}
+      run: |
+        {
+          echo "### verifact"
+          echo ""
+          echo "- exit code: \`${IN_CODE:-unknown}\`"
+          if [ -n "${IN_REPORT}" ] && [ -f "${IN_REPORT}" ]; then
+            echo "- report: \`${IN_REPORT}\`"
+          fi
+          echo "- vendored from Lennonhaha/fibemate-tools at the commit recorded in \`verifact/VENDORED.json\`"
+        } >> "$GITHUB_STEP_SUMMARY"

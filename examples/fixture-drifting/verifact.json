@@ -1,0 +1,35 @@
+{
+  "docs": {
+    "roots": [
+      "./docs"
+    ],
+    "include": [
+      "**/*.md"
+    ],
+    "exclude": [
+      "**/node_modules/**"
+    ]
+  },
+  "artifacts": {
+    "roots": [
+      "./artifacts"
+    ],
+    "exclude": [
+      "**/node_modules/**"
+    ]
+  },
+  "resolve": {
+    "minScore": 0.45,
+    "relTolerance": 0.005,
+    "absTolerance": 0
+  },
+  "lint": {
+    "enabled": true
+  },
+  "gate": {
+    "failOn": "drift"
+  },
+  "cache": {
+    "enabled": false
+  }
+}

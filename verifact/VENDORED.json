@@ -1,0 +1,32 @@
+{
+  "upstream": "Lennonhaha/fibemate-tools",
+  "path": "verifact",
+  "commit": "163efe3791c64e78401671bf388669785d46ad4e",
+  "files": {
+    "verifact/LICENSE": "e5475efd6e78ce2e90eadcd96862b5339b9944b6c4e2808a0738a8e2ce36d174",
+    "verifact/README.md": "fd483aa0ccd1c1eda54b2f9fcb3ad989a2ca315542823269f83e94f52f7d071f",
+    "verifact/bin/verifact.js": "93b96664b0377a9d6cb76a113eea953760b3b81484db65d56cfd231f5ccc0348",
+    "verifact/src/config.js": "4e2acba492b7fb5b65fccc06d9a97cce735ecfb50f7ddb443f6532afe39ba5a9",
+    "verifact/src/core/artifacts.js": "e307b6962c297d2746b464b76bcfb7632a6b63a2a75309bfbd2618f87c533b45",
+    "verifact/src/core/cache.js": "551b66981e6fd9b145535517b7332ee9f1c0e286c9e423599d8bd091f5dc7b14",
+    "verifact/src/core/claims.js": "534728ecfbc67608917ef9b213ec3994a8bba14a39ae3c8c03962d4942295099",
+    "verifact/src/core/crossdoc.js": "fc2e7fceebe7bfdf94f3cf92ea300002629a509e845772ea75537b925e13ee60",
+    "verifact/src/core/dispositions.js": "bc215e407deac1ab9968dc869412e790723be775e76e576b2570c192e4b225cf",
+    "verifact/src/core/lint.js": "a9a685099fde54f1661536ba880c49f24694af47f707c7b22a9f4507d259a1f2",
+    "verifact/src/core/normalize.js": "664dab766a152dbf4009574c135d9abc347f5a22dfbe3f78636bfab32ad2af44",
+    "verifact/src/core/resolve.js": "2686b8def307bc38452d9ebc39ee676ffb5ad8a2f55129cbffbed77e1fb98837",
+    "verifact/src/core/stable-key.js": "42a43426f53e1b22c74dcfcc9104e0433d24fb7c4e8b7403b0fb86219374311a",
+    "verifact/src/core/walk.js": "34ee82367b0c6325ef6d6f4b1c064d5ec8e463739f79b01872b38282b74d4093",
+    "verifact/src/engine.js": "2c6d9f559b4c09c8477e3a4df9675aceb1c38a14115fed3ab144301beb297922",
+    "verifact/src/errors.js": "e639edd6a6cec36d69c57cbbc39c35b33c1a248964d80a4df678ff2a13520985",
+    "verifact/src/history.js": "62e8ea3749fe456ac47410819d8befac7b63ba8dc09b857292b109f42db06c5f",
+    "verifact/src/logger.js": "876eeb8eb87a867af32a63917edfce9d37898e336be943b38dab989c8ee9c053",
+    "verifact/src/pooled-scan.js": "8d1a5be48b960d20b8d7c70425baeb385981bb6771b56ea5ed41e19991e0638b",
+    "verifact/src/server/api.js": "8f29709672eb0a304bbc61f04aba45f9cb4bf7a40984448953c501e7db879f49",
+    "verifact/src/server/www/app.js": "54633d752dcb85224d2e68314abd9278c8ac8018e57f81373133ba7f9455f5c6",
+    "verifact/src/server/www/index.html": "4eb400e6fe9f31ca2fe111b3d16c718e281e9f27cdfaafa9772d000d7fa67f08",
+    "verifact/src/server/www/style.css": "d5cbc1c1817e75f1953db2706dfa853ca8ffd85827c12f97fe215b3bc4e8b598",
+    "verifact/src/worker.js": "374c29ef38855bf84afbcc2f32a507ca57717aba5850b7ed745c5d5e6b01ddfa",
+    "verifact/verifact.json.example": "430d9fbd525dd32a5fd65f6c4945a3aba8a6301a84fbc4165e3eba4004f4677b"
+  }
+}

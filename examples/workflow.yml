@@ -1,0 +1,26 @@
+# Copy into .github/workflows/ of your repository.
+name: docs
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  claims:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Bind numeric claims to artefacts
+        uses: Lennonhaha/verifact-action@v1
+        with:
+          config: verifact.json
+          fail-on: drift          # pass = every bound claim agrees; unbound is reported, not fatal
+
+      - name: Keep the report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: verifact-report
+          path: verifact-report.json
+          if-no-files-found: ignore
